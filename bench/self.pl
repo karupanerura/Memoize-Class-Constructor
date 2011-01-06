@@ -1,9 +1,19 @@
 #!/usr/bin/perl
+package Packed::Text::Xslate;
+use lib '../lib';
+use parent qw(Text::Xslate);
+use Memoize::Class::Constructor (-target => 'new');
+
+sub new{ SUPER::new(@_); }
+
+1;
+
+package main;
+
 use common::sense;
 use lib '../lib';
 use Benchmark qw(cmpthese timethis);
 use Text::Xslate;
-use Memoize::Class::Constructor (-import);
 use Object::Container;
 
 my @options = (
@@ -31,7 +41,7 @@ my @options = (
 
 my $xslate = Object::Container->new;
 do{
-    my $n = 20 * 10000;
+    my $n = 20 * 100;
     my %result = ();
 
     do{
@@ -49,18 +59,17 @@ do{
     };
     do{
 	my $mcc = 'Memoize::Class::Constructor';
-	memoize_constructor('Text::Xslate');
 	$result{$mcc} = timethis($n, \&mcc, $mcc);
     };
     cmpthese \%result;
 };
 
 sub mcc{
-    my $obj0 = Text::Xslate->new(%{$options[0]});
-    my $obj1 = Text::Xslate->new(%{$options[1]});
-    my $obj2 = Text::Xslate->new(%{$options[2]});
-    my $obj3 = Text::Xslate->new(%{$options[3]});
-    my $obj4 = Text::Xslate->new(%{$options[4]});
+    my $obj0 = Memoized::Text::Xslate->new(%{$options[0]});
+    my $obj1 = Memoized::Text::Xslate->new(%{$options[1]});
+    my $obj2 = Memoized::Text::Xslate->new(%{$options[2]});
+    my $obj3 = Memoized::Text::Xslate->new(%{$options[3]});
+    my $obj4 = Memoized::Text::Xslate->new(%{$options[4]});
 }
 
 
@@ -79,3 +88,4 @@ sub oc{
     my $obj3 = $xslate->get('3');
     my $obj4 = $xslate->get('4');
 }
+
