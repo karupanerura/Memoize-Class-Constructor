@@ -124,38 +124,73 @@
 .\" ========================================================================
 .\"
 .IX Title "Memoize::Class::Constructor 3"
-.TH Memoize::Class::Constructor 3 "2011-01-01" "perl v5.12.2" "User Contributed Perl Documentation"
+.TH Memoize::Class::Constructor 3 "2011-01-14" "perl v5.12.2" "User Contributed Perl Documentation"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
 .nh
 .SH "NAME"
-Memoize::Class::Constructor \- aaaa
+Memoize::Class::Constructor \- Make constructor functions faster by trading space for time
 .SH "VERSION"
 .IX Header "VERSION"
 Version 0.01
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-Quick summary of what the module does.
+You can choose to use convenient interface for you.
 .PP
-Perhaps a little code snippet.
-.PP
-.Vb 1
-\&    use Memoize::Class::Constructor;
-\&
-\&    my $foo = Memoize::Class::Constructor\->new();
+.Vb 12
+\&    use Class;
+\&    use Class2;
+\&    use Class3;
+\&    use Class4;
+\&    use Memoize::Class::Constructor (
+\&          Class,                     # memoize target is \*(AqClass::new\*(Aq.
+\&          {Class2 => \*(Aqconstructor\*(Aq}, # memoize target is \*(AqClass2::constructor\*(Aq.
+\&          {
+\&             Class3 => \*(Aqinstance\*(Aq,
+\&             Class4 => \*(Aqnew2\*(Aq,
+\&          }, # memoize target is \*(AqClass3::instance\*(Aq and \*(AqClass4::new2\*(Aq.
+\&    );
+\&    
 \&    ...
 .Ve
-.SH "EXPORT"
-.IX Header "EXPORT"
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+.PP
+or
+.PP
+.Vb 5
+\&    use Class;
+\&    use Class2;
+\&    use Class3;
+\&    use Class4;
+\&    use Memoize::Class::Constructor (\-import => memoize_constructor);
+\&    
+\&    memoize_constructor(
+\&          Class,                     # memoize target is \*(AqClass::new\*(Aq.
+\&          {Class2 => \*(Aqconstructor\*(Aq}, # memoize target is \*(AqClass2::constructor\*(Aq.
+\&          {
+\&             Class3 => \*(Aqinstance\*(Aq,
+\&             Class4 => \*(Aqnew2\*(Aq,
+\&          }, # memoize target is \*(AqClass3::instance\*(Aq and \*(AqClass4::new2\*(Aq.
+\&    );
+\&
+\&    ...
+.Ve
+.PP
+or
+.PP
+.Vb 2
+\&    package Your::Class;
+\&    use Memoize::Class::Constructor (\-target => \*(Aqnew\*(Aq); # memoize target is \*(AqYour::Class::new\*(Aq.
+\&
+\&    ...
+.Ve
 .SH "SUBROUTINES/METHODS"
 .IX Header "SUBROUTINES/METHODS"
-.SS "instance"
-.IX Subsection "instance"
-.SS "has_instance"
-.IX Subsection "has_instance"
+.SS ""
+.IX Subsection ""
+.Vb 1
+\&    memoize_constructor
+.Ve
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Kenta Sato, \f(CW\*(C`<kenta.sato.1990 at gmail.com>\*(C'\fR

@@ -1,7 +1,4 @@
 bench.pl
-bench/default.pl
-bench/keygen_storable.pl
-bench/self.pl
 Changes
 ignore.txt
 inc/Module/AutoInstall.pm

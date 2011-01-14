@@ -12,21 +12,21 @@ sub keygen{ Data::MessagePack->pack(@_); }
 
 my %_options = (
     -target => sub{
-	my($class, $caller, $value) = @_;
+	my($class, $value) = @_;
 	
-	_export_memoize($caller, $value // 'new');
+	_export_memoize(scalar(caller(1)) => $value // 'new');
     },
     -import => sub{
-	my($class, $caller, $value) = @_;
+	my($class, $value) = @_;
 	
 	install_sub(+{
 	    code => \&memoize_constructor,
-	    into => $caller,
+	    into => scalar(caller(1)),
 	    as   => $value // 'memoize_constructor',
 	});
     },
     -keygen => sub{
-	my($class, $caller, $value) = @_;
+	my($class, $value) = @_;
 	
 	if(ref($value) eq 'CODE'){
 	    reinstall_sub(+{
@@ -51,7 +51,7 @@ sub import{
 
 	    map{
 		if($arg eq $_){	    
-		    $_options{$arg}->($class, scalar(caller(0)), $value);
+		    $_options{$arg}->($class, $value);
 		    next;
 		}
 	    } (keys %_options);
@@ -61,8 +61,6 @@ sub import{
 	}
     }
 }
-
-# JSON::Any->objToJson(@_);
 
 =head1 NAME
     
@@ -149,6 +147,7 @@ sub memoize_constructor{
 
 sub _export_memoize{
     my($target_package, $constructor_name) = @_;
+
     my $default_contructor = $target_package->can($constructor_name)
 	or croak("Can't find method '$target_package\::$constructor_name'");
 

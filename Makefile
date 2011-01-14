@@ -11,19 +11,19 @@
 
 #   MakeMaker Parameters:
 
-#     ABSTRACT => q[aaaa]
+#     ABSTRACT => q[Make constructor functions faster by trading space for time]
 #     AUTHOR => q[Kenta Sato, C<< <kenta.sato.1990 at gmail.com> >>, Kenta Sato <kenta.sato.1990@gmail.com>]
 #     BUILD_REQUIRES => { Test::More=>q[0], ExtUtils::MakeMaker=>q[6.42] }
 #     DISTNAME => q[Memoize-Class-Constructor]
 #     LICENSE => q[perl]
 #     NAME => q[Memoize::Class::Constructor]
 #     NO_META => q[1]
-#     PREREQ_PM => { Test::More=>q[0], ExtUtils::MakeMaker=>q[6.42], common::sense=>q[0], JSON::Any=>q[0] }
+#     PREREQ_PM => { Test::More=>q[0], Sub::Install=>q[0], ExtUtils::MakeMaker=>q[6.42], common::sense=>q[0], Data::MessagePack=>q[0] }
 #     VERSION => v0.01
 #     VERSION_FROM => q[lib/Memoize/Class/Constructor.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
-#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/manifest.t t/pod-coverage.t t/pod.t] }
+#     test => { TESTS=>q[t/00-load.t t/01-use.t t/02-import.t t/boilerplate.t t/manifest.t t/pod-coverage.t t/pod.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -742,7 +742,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/00-load.t t/boilerplate.t t/manifest.t t/pod-coverage.t t/pod.t
+TEST_FILES = t/00-load.t t/01-use.t t/02-import.t t/boilerplate.t t/manifest.t t/pod-coverage.t t/pod.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -769,10 +769,11 @@ testdb_static :: testdb_dynamic
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="v0.01">' > $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT>aaaa</ABSTRACT>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT>Make constructor functions faster by trading space for time</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Kenta Sato, C&lt;&lt; &lt;kenta.sato.1990 at gmail.com&gt; &gt;&gt;, Kenta Sato &lt;kenta.sato.1990@gmail.com&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::Any" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Data::MessagePack" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Sub::Install" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="common::sense" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i386-freebsd-thread-multi-64int-5.12" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
